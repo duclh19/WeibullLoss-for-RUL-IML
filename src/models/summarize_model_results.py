@@ -386,12 +386,12 @@ if __name__ == "__main__":
     df0.columns = ["trad_loss_func"]
 
     df1 = dfr[dfr["weibull_loss"] == 1][["epoch_stopped_on"]].describe()
-    df1 = df1.append(
+    df1 = pd.concat([df1,
         pd.DataFrame(
             [dfr[dfr["weibull_loss"] == 1][["epoch_stopped_on"]].median()],
             index=["median"],
         )
-    )
+    ])
     df1.columns = ["weibull_loss_func"]
 
     df_summary = df0.merge(df1, left_index=True, right_index=True)

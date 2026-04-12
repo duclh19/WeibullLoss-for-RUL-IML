@@ -375,7 +375,7 @@ def femto_results_rul_fig(
 
     criterion_rmse = RMSELoss()
 
-    net = torch.load(path_top_model_folder / top_model_name, map_location=device)
+    net = torch.load(path_top_model_folder / top_model_name, map_location=device, weights_only=False)
 
     # y_list
     y_list = [
@@ -598,7 +598,7 @@ def ims_results_rul_fig(
 
     criterion_rmse = RMSELoss()
 
-    net = torch.load(path_top_model_folder / top_model_name, map_location=device)
+    net = torch.load(path_top_model_folder / top_model_name, map_location=device, weights_only=False)
 
     ###### CREATE FIGURE #####
     # color blind colors, from https://bit.ly/3qJ6LYL

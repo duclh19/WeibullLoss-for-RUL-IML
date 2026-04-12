@@ -88,5 +88,6 @@ target/
 
 # Mypy cache
 .mypy_cache/
-
+summary/
+notebooks/
 .venv

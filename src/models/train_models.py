@@ -523,7 +523,8 @@ def train(
         loss_avg_mse = np.mean(train_losses_mse)
 
         # save the results to a pandas dataframe
-        df = df.append(
+        df = pd.concat([
+            df,
             pd.DataFrame(
                 [
                     [
@@ -536,7 +537,7 @@ def train(
                 ],
                 columns=["epoch", "loss", "val_loss", "loss_mse", "val_loss_mse"],
             )
-        )
+        ], ignore_index=True)
 
         early_stopping(val_loss, net)
 
@@ -545,12 +546,12 @@ def train(
             break
 
         # print out the epoch, loss, and iteration number every 5th epoch
-        if epoch % 200 == 0:
+        if epoch % 1 == 0:
             print(f"Epoch: {epoch} \tLoss: {loss_avg:.4f} \tVal Loss: {val_loss:.4f}")
 
     # load the last checkpoint with the best model
     print("Load best model")
-    net = torch.load(checkpoint_path)
+    net = torch.load(checkpoint_path, weights_only=False)
     # net.load_state_dict(torch.load(checkpoint_path))
 
     df = df.reset_index(drop=True)
@@ -785,7 +786,7 @@ for i, param in enumerate(param_list):
         results_list_update = results_list + [results_dict[i] for i in results_dict]
         df_temp = pd.DataFrame([results_list_update], columns=col_update)
 
-        df_results = df_results.append(df_temp)
+        df_results = pd.concat([df_results, df_temp], ignore_index=True)
 
         # update csv of results
         df_results.to_csv(

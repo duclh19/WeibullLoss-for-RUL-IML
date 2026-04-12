@@ -46,7 +46,7 @@ class EarlyStopping:
         self.epoch = 0
         self.best_score = None
         self.early_stop = False
-        self.val_loss_min = np.Inf
+        self.val_loss_min = np.inf
         self.delta = delta
         self.path = path
         self.trace_func = trace_func
@@ -176,7 +176,7 @@ def test_metrics_to_results_df(model_folder, df_results, x_test, y_test, ):
             print('model no. ', i)
 
         # load model 
-        net = torch.load(model_folder / model_name, map_location=device)
+        net = torch.load(model_folder / model_name, map_location=device, weights_only=False)
 
         results_dict = model_metrics_test(net, model_folder / model_name, x_test, y_test, device)
         results_dict['model_name'] = model_name
