@@ -377,12 +377,12 @@ if __name__ == "__main__":
 
     # create and save early stopping summary statistics
     df0 = dfr[dfr["weibull_loss"] == 0][["epoch_stopped_on"]].describe()
-    df0 = df0.append(
+    df0 = pd.concat([df0,
         pd.DataFrame(
             [dfr[dfr["weibull_loss"] == 0][["epoch_stopped_on"]].median()],
             index=["median"],
         )
-    )
+    ])
     df0.columns = ["trad_loss_func"]
 
     df1 = dfr[dfr["weibull_loss"] == 1][["epoch_stopped_on"]].describe()

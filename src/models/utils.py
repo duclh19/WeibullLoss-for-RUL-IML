@@ -181,7 +181,7 @@ def test_metrics_to_results_df(model_folder, df_results, x_test, y_test, ):
         results_dict = model_metrics_test(net, model_folder / model_name, x_test, y_test, device)
         results_dict['model_name'] = model_name
 
-        df_temp = df_temp.append(pd.DataFrame.from_dict(results_dict,orient='index').T)
+        df_temp = pd.concat([df_temp, pd.DataFrame.from_dict(results_dict,orient='index').T], ignore_index=True)
 
     df_temp = df_temp.reset_index(drop=True)
         

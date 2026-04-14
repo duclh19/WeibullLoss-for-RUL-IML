@@ -9,9 +9,8 @@ readme = "README.md"
 requires-python = ">=3.8"
 license = {text = "MIT"}
 dependencies = [
-    "torch",
+    "torch<=2.0.0",
     "torchvision",
-    "torchaudio",
     "jupyterlab",
     "numpy",
     "scipy",
@@ -21,7 +20,8 @@ dependencies = [
     "scikit-learn",
     "click",
     "h5py",
-    "gdown"
+    "gdown",
+    "streamlit>=1.40.1",
 ]
 
 [build-system]
