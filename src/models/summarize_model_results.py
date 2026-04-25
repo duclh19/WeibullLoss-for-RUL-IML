@@ -45,7 +45,7 @@ parser.add_argument(
     "--data_set",
     dest="data_set",
     type=str,
-    default="ims",
+    default="femto",
     help="The data set use (either 'ims' or 'femto')",
 )
 
@@ -96,7 +96,7 @@ args = parser.parse_args()
 # General Parameters
 SAVE_ENTIRE_CSV = True  # if you want to save the entire CSV, before filtering
 ADD_TEST_RESULTS = True  # if you want to append the test results
-TOP_MODEL_COUNT = 2  # the number of models to save in models/final/top_models directory
+TOP_MODEL_COUNT = 5  # the number of models to save in iml/models/final/top_models directory
 # e.g. save top 10 models
 
 # Filter parameters
@@ -163,10 +163,10 @@ def set_directories():
             folder_data = root_dir / "data/processed/FEMTO/"
             print("load FEMTO data", folder_data)
 
-        folder_results = root_dir / f"models/interim/results_csv_{DATASET_TYPE}"
-        folder_checkpoints = root_dir / f"models/interim/checkpoints_{DATASET_TYPE}"
+        folder_results = root_dir / f"iml/models/interim/results_csv_{DATASET_TYPE}"
+        folder_checkpoints = root_dir / f"iml/models/interim/checkpoints_{DATASET_TYPE}"
         folder_learning_curves = (
-            root_dir / f"models/interim/learning_curves_{DATASET_TYPE}"
+            root_dir / f"iml/models/interim/learning_curves_{DATASET_TYPE}"
         )
 
     return (
@@ -233,7 +233,7 @@ if __name__ == "__main__":
 
     if SAVE_ENTIRE_CSV:
         df.to_csv(
-            root_dir / "models/final" / f"{DATASET_TYPE}_results_summary_all.csv.gz",
+            root_dir / "iml/models/final" / f"{DATASET_TYPE}_results_summary_all.csv.gz",
             index=False, compression="gzip",
         )
 
@@ -337,7 +337,7 @@ if __name__ == "__main__":
 
         if SAVE_ENTIRE_CSV:
             df.to_csv(
-                root_dir / "models/final" / f"{DATASET_TYPE}_results_summary_all.csv.gz",
+                root_dir / "iml/models/final" / f"{DATASET_TYPE}_results_summary_all.csv.gz",
                 index=False, compression="gzip",
             )
     # how many unique model architectures?
@@ -372,7 +372,7 @@ if __name__ == "__main__":
 
     # save filtered results csv
     dfr.to_csv(
-        root_dir / "models/final" / f"{DATASET_TYPE}_results_filtered.csv", index=False
+        root_dir / "iml/models/final" / f"{DATASET_TYPE}_results_filtered.csv", index=False
     )
 
     # create and save early stopping summary statistics
@@ -396,16 +396,16 @@ if __name__ == "__main__":
 
     df_summary = df0.merge(df1, left_index=True, right_index=True)
     df_summary.to_csv(
-        root_dir / "models/final" / f"{DATASET_TYPE}_early_stop_summary_stats.csv",
+        root_dir / "iml/models/final" / f"{DATASET_TYPE}_early_stop_summary_stats.csv",
         index=True,
     )
 
-    # select top N models and save in models/final/top_models directory
+    # select top N models and save in iml/models/final/top_models directory
     top_models = dfr["model_checkpoint_name"][:TOP_MODEL_COUNT]
-    Path(root_dir / f"models/final/top_models_{DATASET_TYPE}").mkdir(
+    Path(root_dir / f"iml/models/final/top_models_{DATASET_TYPE}").mkdir(
         parents=True, exist_ok=True
     )
-    top_model_folder = root_dir / f"models/final/top_models_{DATASET_TYPE}"
+    top_model_folder = root_dir / f"iml/models/final/top_models_{DATASET_TYPE}"
     for model_name in top_models:
         copyfile(
             folder_checkpoints / f"{model_name}", top_model_folder / f"{model_name}"
@@ -459,7 +459,7 @@ if __name__ == "__main__":
 
     # save csv so we can use it later to create charts with
     df_count.to_csv(
-        root_dir / "models/final" / f"{DATASET_TYPE}_count_results.csv", index=False
+        root_dir / "iml/models/final" / f"{DATASET_TYPE}_count_results.csv", index=False
     )
 
     # perform correlation analysis over the various loss functions
@@ -514,6 +514,6 @@ if __name__ == "__main__":
     )
     df_corr = df_corr.drop("loss_func2", axis=1)
     df_corr.to_csv(
-        root_dir / "models/final" / f"{DATASET_TYPE}_correlation_results.csv",
+        root_dir / "iml/models/final" / f"{DATASET_TYPE}_correlation_results.csv",
         index=False,
     )
